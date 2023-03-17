@@ -12,7 +12,7 @@
 <% out.println("Boa tarde"); %>
 
 
-<form action="receber-nome.jsp">
+<form action="servletLogin" method="post">
 Nome :<input name="nome"> <!-- name = variavel setada -->
 Idade :<input name="idade">
 
