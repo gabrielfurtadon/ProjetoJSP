@@ -1,14 +1,17 @@
 package servlets;
 
+import java.io.IOException;
+
+import bean.loginBean;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
-@WebServlet("/servletLogin") // mapeamento da URL que vem da tela 
+@WebServlet(urlPatterns = {"/servletLogin", "/principal/ServletLogin"}) // mapeamento da URL que vem da tela 
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,8 +29,36 @@ public class ServletLogin extends HttpServlet {
 
 	//RECEBE OS DADOS ENVIADOS POR UM FORMULARIO
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getParameter("nome"));
-		System.out.println(request.getParameter("idade"));
+		String login = request.getParameter("login"); // parametro que vem da tela 
+		String senha = request.getParameter("senha"); // parametro que vem da tela 
+		String url = request.getParameter("url");
+		
+		if(login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
+			loginBean lb = new loginBean();
+			lb.setLogin(login);
+			lb.setSenha(senha);
+			
+			
+			if(lb.getLogin().equalsIgnoreCase("admin") && lb.getSenha().equalsIgnoreCase("admin")) {
+				request.getSession().setAttribute("Usuario", lb.getLogin()); // CRIANDO SESSÃO, SETANDO SO O LOGIN PARA A SENHA NAO FICAR GUARDADA NA SESSÃO
+				
+				if(url == null || url.equals("null")) {
+					url = "principal/main.jsp";
+				}
+				
+				RequestDispatcher redirecionar = request.getRequestDispatcher(url);
+				redirecionar.forward(request, response);
+			}else {
+				RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
+				request.setAttribute("msg", "Login e senha incorretos!");
+				redirecionar.forward(request, response);
+			}
+			
+		}else {
+			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+			request.setAttribute("msg", "Login e senha não informados, por favor informe-os corretamente!");
+			redirecionar.forward(request, response);
+		}
 	}
 
 }
