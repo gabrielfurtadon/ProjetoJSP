@@ -39,12 +39,13 @@ public class ServletLogin extends HttpServlet {
 		try {
 		
 				if(login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
+					
 					loginBean lb = new loginBean();
 					lb.setLogin(login);
 					lb.setSenha(senha);
 					
-					
-					if(daoLoginRepository.validarAutenticacao(lb)) {
+//					
+					if(daoLoginRepository.validarAutenticacao(lb)) { 
 						
 						request.getSession().setAttribute("Usuario", lb.getLogin()); // CRIANDO SESSÃO, SETANDO SO O LOGIN PARA A SENHA NAO FICAR GUARDADA NA SESSÃO
 						
@@ -68,6 +69,9 @@ public class ServletLogin extends HttpServlet {
 	
 		}catch(Exception e) {
 			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 		}
 	}
 

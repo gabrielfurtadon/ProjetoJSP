@@ -5,13 +5,17 @@ import java.sql.DriverManager;
 
 public class SingleConnectionBanco {
 
-	private static String banco = "jdbc:postgressql://localhost:5432/curso-jsp?autoReconnect=true"; // autoReconnect=true = caso o banco caia ele consegue fazer a reconexão
+	private static String banco = "jdbc:postgresql://localhost:5432/curso-jsp?autoReconnect=true"; // autoReconnect=true = caso o banco caia ele consegue fazer a reconexão
 	private static String user = "postgres";
 	private static String senha = "admin";
 	private static Connection conn = null;
 	
 	public static Connection getConn() {
 		return conn;
+	}
+	
+	static {
+		conectar();
 	}
 	
 	public SingleConnectionBanco() {

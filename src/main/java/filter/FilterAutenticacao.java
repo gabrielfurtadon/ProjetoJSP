@@ -17,10 +17,14 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = {"/principal/*"}) // INTERCEPTA TODAS AS REQUISIÇÕES QUE VIEREM DO PROJETO OU MAPEAMENTO de tudo que estiver na pasta "principal"
+@WebFilter("/filterAutenticacao") // INTERCEPTA TODAS AS REQUISIÇÕES QUE VIEREM DO PROJETO OU MAPEAMENTO de tudo que estiver na pasta "principal"
 public class FilterAutenticacao extends HttpFilter implements Filter {
        
     
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Connection connection;
 	
     public FilterAutenticacao() {
@@ -65,6 +69,9 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 			
 		}catch(Exception e) {
 			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 			try {
 				connection.rollback(); // DESFAZ TODAS AS MUDANÇAS DO BANCO CASO SURJA ALGUM ERRO
 			} catch (SQLException e1) {
