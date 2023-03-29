@@ -56,7 +56,7 @@ display: flex;
 	<%-- <% out.println("Boa tarde"); %> --%>
 	 
 	
-	<form action="servletLogin" method="post" class="row g-3 needs-validation" novalidate  id="formLogin" >
+	<form action="<%= request.getContextPath() %>/servletLogin" method="post" class="row g-3 needs-validation" novalidate  id="formLogin" >
 		<input type="hidden" value="<%= request.getParameter("url")%>" name="url" > <!-- QUANDO COLOCAR UMA VALOR DENTRO DE UMA TAG VALUE TEM QUE COLOCAR O = -->
 		<!-- TABELA DE LOGIN -->
 		<div class="mb-3">
